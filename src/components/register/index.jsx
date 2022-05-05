@@ -13,33 +13,77 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {Link} from "react-router-dom";
 import LinkMu from '@mui/material/Link';
-import { genericGetService } from "../../api/externalServices";
+import { genericGetService, genericPostService } from "../../api/externalServices";
 import  AutoCompleteSearch from './autoCompleteSearch';
 import BackdropLoader from "../common/backdroploader";
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 
+const theme = createTheme();
 
-
-function Copyright(props) {
-    return (
-      <Typography variant="body2" color="text.secondary" align="center" {...props}>
-        {'Copyright © '}
-        <Link color="inherit" to="https://mui.com/">
-          Your Website
-        </Link>{' '}
-        {new Date().getFullYear()}
-        {'.'}
-      </Typography>
-    );
-  }
-  
-  const theme = createTheme();
-
+const validationSchema = yup.object({
+  email: yup
+    .string('Ingrese el correo')
+    .email('Ingrese un email válido')
+    .required('El correo es obligatorio'),
+  password: yup
+    .string('Ingresa la contraseña')
+    .min(2, 'La contraseña debe tener al menos 2 caracteres')
+    .required('La contraseña es obligatoria'),
+  names: yup
+    .string()
+    .required('Este campo es obligatorio'),
+  lastNames: yup
+    .string()
+    .required('Este campo es obligatorio'),
+    selectedChurchId: yup
+    .string().required('Debe seleccionar una iglesia'),
+  passwordConfirm: yup
+    .string().when("password", {
+      is: val => (val && val.length > 0 ? true : false),
+      then: yup.string().oneOf(
+        [yup.ref("password")],
+        "La contraseña no coincide"
+      )
+    })
+    
+});
 
 function Register() {
 
   const [loading, setLoading] = useState(true);
   const [errorInfo, setErrorInfo] = useState("");
   const [churches, setChurches] = useState([]);
+  const [selectedChurchId, setSelectedChurchId] = useState("");
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      names:'',
+      lastNames: '',
+      selectedChurchId: ""
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+
+      var payload = {
+        email: values.email,
+        name: values.names,
+        lastName: values.lastNames,
+        password: values.password,
+        churchId: values.selectedChurchId
+      };
+
+      setLoading(true);
+      const results = await genericPostService("http://localhost:4000/user", payload);
+      setLoading(false);
+      console.log(results)
+
+      alert(JSON.stringify(payload, null, 2));
+    },
+  });
 
 
   useEffect(()=>{
@@ -56,15 +100,14 @@ function Register() {
 
   }, [])
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  useEffect(() =>{
+    if(selectedChurchId){
+      formik.values.selectedChurchId = selectedChurchId._id;
+      console.log(selectedChurchId)
+    }else{
+      formik.values.selectedChurchId = "";
+    }
+  },[selectedChurchId]);
 
   return errorInfo !== "" ? <div>{errorInfo}</div> :  (
     <ThemeProvider theme={theme}>
@@ -85,29 +128,43 @@ function Register() {
           <Typography component="h1" variant="h5">
             Registrarse
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={1}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="firstName"
+                  name="names"
                   required
                   fullWidth
-                  id="firstName"
+                  id="names"
                   label="Nombres"
                   autoFocus
+                  value={formik.values.names}
+                  onChange={formik.handleChange}
+                  error={formik.touched.names && Boolean(formik.errors.names)}
+                  helperText={formik.touched.names && formik.errors.names}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
-                  id="lastName"
+                  id="lastNames"
+                  name="lastNames"
                   label="Apellidos"
-                  name="lastName"
+                  value={formik.values.lastNames}
+                  onChange={formik.handleChange}
+                  error={formik.touched.lastNames && Boolean(formik.errors.lastNames)}
+                  helperText={formik.touched.lastNames && formik.errors.lastNames}
                 />
               </Grid>
               <Grid item xs={12}>
-                <AutoCompleteSearch items={churches}/>
+                <Box component="span" className='error'>
+                  <AutoCompleteSearch
+                   setSelectedChurchId={setSelectedChurchId}
+                   error={formik.touched.selectedChurchId && Boolean(formik.errors.selectedChurchId)}
+                   helperText={formik.touched.selectedChurchId && formik.errors.selectedChurchId}
+                  items={churches}/>
+                </Box>
                </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -116,6 +173,10 @@ function Register() {
                   id="email"
                   label="Correo electrónico"
                   name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -126,6 +187,10 @@ function Register() {
                   label="Contraseña"
                   type="password"
                   id="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  error={formik.touched.password && Boolean(formik.errors.password)}
+                  helperText={formik.touched.password && formik.errors.password}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -136,12 +201,10 @@ function Register() {
                   label="Confirmar contraseña"
                   type="password"
                   id="passwordConfirm"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
+                  value={formik.values.passwordConfirm}
+                  onChange={formik.handleChange}
+                  error={formik.touched.passwordConfirm && Boolean(formik.errors.passwordConfirm)}
+                  helperText={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
                 />
               </Grid>
             </Grid>
@@ -160,7 +223,6 @@ function Register() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
