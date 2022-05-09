@@ -1,18 +1,12 @@
-import React from 'react';
-import Navbar from '../navbar';
-import Box from '@mui/material/Box';
-import RoutesCollection from '../../routes/mainRouter'
-import  '../../styles/app.css';
-
+import Navbar from "../navbar";
+import RoutesCollection from "../../routes/mainRouter";
 
 function Layout() {
   return (
-      <Box>
-        <div className="layout-container">
-            <Navbar/>
-            {RoutesCollection}
-        </div>
-      </Box>       
+    <>
+      <Navbar />
+      <div className="main">{RoutesCollection}</div>
+    </>
   );
 }
 
