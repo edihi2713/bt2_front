@@ -1,7 +1,8 @@
 
-.main-toolbar-items{
+.containerNavBar{
     display: flex;
     justify-content: space-between;
+    background-color: #2B2B2B;
 }
 
 @media only screen and (max-width: 375px) {
