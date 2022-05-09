@@ -1,0 +1,17 @@
+.containerCard{
+    background: #323232;
+    box-shadow: 12.2518px 24.1017px 16.4993px -7.32006px #0006;
+    border: 1px solid #454545;
+    border-radius: 4px;
+    color: #f1f1f1;
+    width: 281px;
+    height: 263px;
+    padding: 15px 17px 17px;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    position: relative;
+}
