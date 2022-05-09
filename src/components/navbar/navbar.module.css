@@ -8,6 +8,7 @@
   width: 100%;
   z-index: 1;
   top: 0;
+  color: #F1F1F1;
 }
 
 @media only screen and (max-width: 375px) {
