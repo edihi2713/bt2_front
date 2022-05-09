@@ -1,6 +1,7 @@
 .containerHome {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
   padding: 50px;
 }
 
@@ -21,6 +22,7 @@
   justify-content: space-between;
   position: relative;
   align-items: center;
+  margin: 15px;
 
   transition: 0.5s all;
 }
