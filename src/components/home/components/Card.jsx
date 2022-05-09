@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 export default function Card({ name, iconName }) {
   return (
     <div className={styles.containerCard}>
-      <Icon sx={{ fontSize: "70px" }}>{iconName}</Icon>
+
+      {/* Pendiente definir que clase de imagen o icono va a ir acá y la forma en que se va a cargar, si desde local o desde donde */}
+      <Icon sx={{ fontSize: "70px" }}>{iconName}</Icon> 
       <div>
         <div className={styles.productCardDivider}></div>
         <Link to="/register" className="text-link">
