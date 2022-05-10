@@ -1,14 +1,18 @@
-import React from 'react';
-import Box from '@mui/material/Box';
+import React from "react";
+import Card from "./components/Card";
+import dataCards from "./dataCards";
+import styles from "./home.module.css";
 
 function Home() {
-  return (
-      <Box>
-        <div className="home-container">
-            soy home
-        </div>
-      </Box>       
-  );
+  const cards = dataCards.map((card) => {
+    return (
+      <div key={card.id}>
+        <Card name={card.name} iconName={card.iconName} />
+      </div>
+    );
+  });
+
+  return <div className={styles.containerHome}>{cards}</div>;
 }
 
 export default Home;
