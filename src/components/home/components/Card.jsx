@@ -3,7 +3,7 @@ import styles from "../home.module.css";
 import Icon from "@mui/material/Icon";
 import { Link } from "react-router-dom";
 
-export default function Card({ name, iconName }) {
+export default function Card({ name, iconName, path }) {
   return (
     <div className={styles.containerCard}>
 
@@ -11,7 +11,7 @@ export default function Card({ name, iconName }) {
       <Icon sx={{ fontSize: "70px" }}>{iconName}</Icon> 
       <div>
         <div className={styles.productCardDivider}></div>
-        <Link to="/register" className="text-link">
+        <Link to={path} className="text-link">
           <p className={styles.text}>{name}</p>
         </Link>
       </div>

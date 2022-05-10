@@ -7,7 +7,7 @@ function Home() {
   const cards = dataCards.map((card) => {
     return (
       <div key={card.id}>
-        <Card name={card.name} iconName={card.iconName} />
+        <Card name={card.name} iconName={card.iconName} path={card.path} />
       </div>
     );
   });
