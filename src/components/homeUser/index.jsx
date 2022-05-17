@@ -1,7 +1,8 @@
 import React from "react";
-import styles from "./home.module.css";
+import { useSelector  } from 'react-redux'
 
 function HomeUser() {
+    const user = useSelector(state => state.user)
     /* const cards = dataCards.map((card) => {
         return (
             <div key={card.id}>
@@ -10,7 +11,7 @@ function HomeUser() {
         );
     }); */
 
-    return <div className={styles.containerHome}>Hola Usuario</div>;
+    return <div>Hola {user && user.userEmail}</div>;
 }
 
 export default HomeUser;

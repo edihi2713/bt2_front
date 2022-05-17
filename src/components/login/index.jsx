@@ -9,13 +9,16 @@ import LinkMu from '@mui/material/Link';
 import {Link} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { genericPostService } from "../../api/externalServices";
 import BackdropLoader from "../common/backdroploader";
-
+import { useDispatch  } from 'react-redux'
+import { login } from '../../features/user/userSlice'
+import { useNavigate } from "react-router-dom";
 
 
 function Copyright(props) {
@@ -39,6 +42,8 @@ const requiredFields =  [
 const theme = createTheme();
 
 function Login() {
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const initialFormState = {
     user: '',
@@ -54,6 +59,7 @@ function Login() {
   const [loginInfo, setLoginInfo] = useState(initialFormState);
   const [missingRequiredFields, setMissingRequiredFields] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -75,12 +81,38 @@ function Login() {
     setLoading(true);
     const results = await genericPostService("http://localhost:4000/login", loginInfo);
     setLoading(false);
-    console.log(results)
+
+    if (results[0] && results[0].access_token){
+      dispatch(
+        login({
+          userEmail:  loginInfo.user,
+          token: results[0].access_token
+        })
+      );
+
+      setErrorMessage("");
+      return navigate("/dashboard");
+
+    }
+    
+    if(results[0] && !results[0].access_token){
+      setErrorMessage("Por favor verifique sus credenciales.")
+      return;
+    }
+
+    if(!results[0]){
+      setErrorMessage("Se ha presentado un error, por favor contacte al administrador")
+      return;
+    }
+
   };
 
   const handleFormOnchange = (e) => {
     const { name, value } = e.target
 
+    if(errorMessage.length > 0){
+      setErrorMessage("")
+    }
     if(value){
       setMissingRequiredFields([])
     }
@@ -156,6 +188,9 @@ function Login() {
                 <Link to="/register" className='text-link'><LinkMu  variant="body2" component={"span"}>Registrarse</LinkMu> </Link> 
               </Grid>
             </Grid>
+            <div>
+              {errorMessage.length > 0 && <Alert severity="error">{errorMessage}</Alert>}
+            </div>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
