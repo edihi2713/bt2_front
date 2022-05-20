@@ -1,49 +1,132 @@
-import React from "react";
+import React, { useState } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import InfoIcon from '@mui/icons-material/Info';
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import Stack from '@mui/material/Stack';
 import Paper from '@material-ui/core/Paper';
-  
-function createData(number, item, qty, price) {
- return { number, item, qty, price };
+
+function createData(fecha, nombre, hora, capacidad, reservas, porcReservas, asistencia, estado) {
+    return { fecha, nombre, hora, capacidad, reservas, porcReservas, asistencia, estado };
 }
-  
+
 const rows = [
- createData(1, "Apple", 5, 3),
- createData(2, "Orange", 2, 2),
- createData(3, "Grapes", 3, 1),
- createData(4, "Tomato", 2, 1.6),
- createData(5, "Mango", 1.5, 4)
+    createData("20/05/2022", "Culto 1", "09:00", 500, "100", "100%", "50", "Pendiente"),
+    createData("16/05/2022", "Culto 2", "12:00", 1000, "40", "100%", "50", "Pendiente"),
+    createData("18/05/2022", "Culto 4", "14:00", 2000, "1500", "100%", "50", "Pendiente"),
+    createData("15/05/2022", "Culto 3", "10:00", 5000, "3500", "100%", "50", "Pendiente"),
+    createData("10/05/2022", "Culto 5", "20:00", 500, "300", "100%", "50", "Pendiente"),
+    createData("17/05/2022", "Culto 6", "15:00", 3000, "2000", "100%", "50", "Pendiente"),
+    createData("19/05/2022", "Culto 7", "18:00", 50, "35", "100%", "50", "Pendiente")
 ];
-  
+
 export default function BasicTable() {
- return (
-   <TableContainer component={Paper}>
-     <Table aria-label="simple table">
-       <TableHead>
-         <TableRow>
-           <TableCell>S.No</TableCell>
-           <TableCell align="right">Item</TableCell>
-           <TableCell align="right">Quantity&nbsp;(kg)</TableCell>
-           <TableCell align="right">Price&nbsp;($)</TableCell>
-         </TableRow>
-       </TableHead>
-       <TableBody>
-         {rows.map((row) => (
-           <TableRow key={row.number}>
-             <TableCell component="th" scope="row">
-               {row.number}
-             </TableCell>
-             <TableCell align="right">{row.item}</TableCell>
-             <TableCell align="right">{row.qty}</TableCell>
-             <TableCell align="right">{row.price}</TableCell>
-           </TableRow>
-         ))}
-       </TableBody>
-     </Table>
-   </TableContainer>
- );
+
+    const [rowData, setRowData] = useState(rows);
+    const [orderDirection, setOrderDirection] = useState("asc");
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = React.useState(0);
+
+    const sortArray = (arr, orderBy, columnName) => {
+        switch (orderBy) {
+            case "asc":
+            default:
+                return arr.sort((a, b) =>
+                    a[columnName] > b[columnName] ? 1 : b[columnName] > a[columnName] ? -1 : 0
+                );
+            case "desc":
+                return arr.sort((a, b) =>
+                    a[columnName] < b[columnName] ? 1 : b[columnName] < a[columnName] ? -1 : 0
+                );
+        }
+    };
+
+    const handleSortRequest = (columnName) => {
+        setRowData(sortArray(rows, orderDirection, columnName));
+        setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
+    };
+
+    return (
+        <div>
+            <TableContainer component={Paper}>
+                <Table aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align="center" onClick={() => handleSortRequest('fecha')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Fecha
+                                </TableSortLabel>
+                            </TableCell>
+
+                            <TableCell align="center" onClick={() => handleSortRequest('nombre')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Nombre
+                                </TableSortLabel>
+                            </TableCell>
+
+                            <TableCell align="center" onClick={() => handleSortRequest('hora')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Hora
+                                </TableSortLabel>
+                            </TableCell>
+
+                            <TableCell align="center" onClick={() => handleSortRequest('capacidad')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Capacidad
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell align="center" onClick={() => handleSortRequest('reservas')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Resevas
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell align="center" onClick={() => handleSortRequest('porcReservas')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    % Resevas
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell align="center" onClick={() => handleSortRequest('asistencia')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Asistencia
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell align="center" onClick={() => handleSortRequest('estado')}>
+                                <TableSortLabel active={true} direction={orderDirection}>
+                                    Estado
+                                </TableSortLabel>
+                            </TableCell>
+                            <TableCell>Acciones</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rowData.map((row) => (
+                            <TableRow key={row.fecha}>
+                                <TableCell component="th" scope="row" align="center">
+                                    {row.fecha}
+                                </TableCell>
+                                <TableCell align="center">{row.nombre}</TableCell>
+                                <TableCell align="center">{row.hora}</TableCell>
+                                <TableCell align="center">{row.capacidad}</TableCell>
+                                <TableCell align="center">{row.reservas}</TableCell>
+                                <TableCell align="center">{row.porcReservas}</TableCell>
+                                <TableCell align="center">{row.asistencia}</TableCell>
+                                <TableCell align="center">{row.estado}</TableCell>
+                                <TableCell align="center">
+                                    <Stack spacing={1} direction="row">
+                                        <InfoIcon></InfoIcon>
+                                        <ModeEditIcon></ModeEditIcon>
+                                    </Stack>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </div>
+    );
 }
