@@ -6,7 +6,7 @@ import {
 import Home from "../components/home"
 import Login from "../components/login"
 import Register from "../components/register"
-import Aforo from "../components/Aforo"
+import Aforo from "../components/capacity/index"
 import HomeUser from "../components/homeUser";
 import { ProtectedRoute } from "./protectedRoute";
 
