@@ -6,9 +6,13 @@ import {
 import Home from "../components/home"
 import Login from "../components/login"
 import Register from "../components/register"
-import Aforo from "../components/capacity/index"
+import Aforo from "../components/aforo/index"
 import HomeUser from "../components/homeUser";
 import { ProtectedRoute } from "./protectedRoute";
+import FormAforo from '../components/aforo/new people/Form'
+import EventsOptions from "../components/aforo/events";
+import VerifyAsistents from "../components/aforo/events/components/VerifyAsistents";
+import EventListView from '../components/aforo/events/components/index'
 
 const RoutesCollection = (
       <Routes>
@@ -25,6 +29,10 @@ const RoutesCollection = (
             }
           />
           <Route path="/*" element={<Aforo />} />
+          <Route path="/new-people" element={<FormAforo />}/>
+          <Route path="/events-option" element={<EventsOptions />}/>
+          <Route path="/verify-asistents" element={<VerifyAsistents />}/>
+          <Route path="/create-events" element={<EventListView />}/>
       </Routes>
 );
 

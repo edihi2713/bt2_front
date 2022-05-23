@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../home.module.css";
+import styles from "./home/home.module.css";
 import Icon from "@mui/material/Icon";
 import { Link } from "react-router-dom";
 
