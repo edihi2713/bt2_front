@@ -4,6 +4,7 @@ const dataCards = [
     name: "Aforo",
     iconName: "people_icon",
     path: "/aforo",
+    isGuestRoute: false,
     options: [
       {
         id: 0,
@@ -32,6 +33,13 @@ const dataCards = [
         ],
       },
     ],
+  },
+  {
+    id: 1,
+    name: "Asistencia",
+    iconName: "people_icon",
+    path: "/events-option",
+    isGuestRoute: true
   },
 ];
 

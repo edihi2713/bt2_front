@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './capacity.css'
 import BasicTable from './eventListView'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
+import NewEventModal from '../components/newEvent';
 
 export default function Aforo() {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+
   return (
     <div className='aforoMainContainer'>
 
@@ -12,11 +16,12 @@ export default function Aforo() {
       <div className='toolBarContainer' >
         <Stack spacing={2} direction="row">
           <Button variant="contained" style={{backgroundColor:"#454545"}}>Verificar</Button>
-          <Button variant="outlined" style={{color:"black"}}>Crear Evento</Button>
+          <Button variant="outlined" style={{color:"black"}} onClick={handleOpen} >Crear Evento</Button>
         </Stack>
 
       </div>
 
+      <NewEventModal open = {open} setOpen = {setOpen} />
       <BasicTable style={{ marginTop: "35px !important" }} />
 
     </div>

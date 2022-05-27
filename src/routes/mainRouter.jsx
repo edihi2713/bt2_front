@@ -19,7 +19,11 @@ const RoutesCollection = (
           <Route exact path="/"  element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/aforo" element={<Aforo />} />
+          <Route path="/aforo" element={
+              <ProtectedRoute>
+                <Aforo />
+              </ProtectedRoute>
+            } />
           <Route
             path="/dashboard"
             element={
