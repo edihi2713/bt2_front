@@ -1,6 +1,6 @@
 import React from 'react'
-import BasicTable from './eventListView'
 import './capacity.css'
+import BasicTable from './eventListView'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 
