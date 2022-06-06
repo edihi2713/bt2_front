@@ -42,6 +42,9 @@ const requiredFields =  [
 const theme = createTheme();
 
 function Login() {
+
+  const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || "http://localhost:4000";
+
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -62,6 +65,7 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event) => {
+
     event.preventDefault();
 
     let missingFields = [];
@@ -79,7 +83,7 @@ function Login() {
     } 
 
     setLoading(true);
-    const results = await genericPostService("http://localhost:4000/login", loginInfo);
+    const results = await genericPostService(`${BASE_URL}/login`, loginInfo);
     setLoading(false);
 
     if (results[0] && results[0].access_token){

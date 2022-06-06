@@ -50,7 +50,7 @@ const validationSchema = yup.object({
 });
 
 function Register() {
-
+  const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || "http://localhost:4000";
   const [loading, setLoading] = useState(true);
   const [errorInfo, setErrorInfo] = useState("");
   const [churches, setChurches] = useState([]);
@@ -77,7 +77,7 @@ function Register() {
       };
 
       setLoading(true);
-      const results = await genericPostService("http://localhost:4000/user", payload);
+      const results = await genericPostService(`${BASE_URL}/user`, payload);
       setLoading(false);
       console.log(results)
 
@@ -88,7 +88,7 @@ function Register() {
 
   useEffect(()=>{
     const loadChurches =  async () => {
-      const results = await genericGetService("http://localhost:4000/church")
+      const results = await genericGetService(`${BASE_URL}/church`)
       setLoading(false)
       if(results[1]){
         setErrorInfo("Se ha presentado un error cargando las iglesias.")
