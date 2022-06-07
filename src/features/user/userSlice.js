@@ -4,17 +4,21 @@ export const userSlice = createSlice({
     name: 'user',
     initialState :{
         userEmail:'',
-        token: ''
+        token: '',
+        selectedChurchId: '',
     },
     reducers: {
         login: (state, action) => {
             state.userEmail = action.payload.userEmail;
             state.token = action.payload.token;
+        },
+        setSelectedChurch: (state, action) => {
+            state.selectedChurchId = action.payload.selectedChurchId;
         }
     }
 });
 
-export const { login } = userSlice.actions;
+export const { login, setSelectedChurch } = userSlice.actions;
 
 export default userSlice.reducer;
 

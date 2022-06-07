@@ -79,8 +79,6 @@ function Register() {
       setLoading(true);
       const results = await genericPostService(`${BASE_URL}/user`, payload);
       setLoading(false);
-      console.log(results)
-
       alert(JSON.stringify(payload, null, 2));
     },
   });
@@ -103,7 +101,6 @@ function Register() {
   useEffect(() =>{
     if(selectedChurchId){
       formik.values.selectedChurchId = selectedChurchId._id;
-      console.log(selectedChurchId)
     }else{
       formik.values.selectedChurchId = "";
     }

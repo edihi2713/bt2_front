@@ -6,7 +6,7 @@ export const ProtectedRoute = ({ children }) => {
   const user = useSelector(state => state.user)
   const { token } = user;
   if (!token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" />;
   }
   return children;
 };

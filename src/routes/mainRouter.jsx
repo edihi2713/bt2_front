@@ -13,11 +13,13 @@ import FormAforo from '../components/aforo/new people/Form'
 import EventsOptions from "../components/aforo/events";
 import VerifyAsistents from "../components/aforo/events/components/VerifyAsistents";
 import EventListView from '../components/aforo/events/components/index'
+import MainOptionsScreen from "../components/home/MainOptionsScreen";
 
 const RoutesCollection = (
       <Routes>
           <Route exact path="/"  element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/main" element={<MainOptionsScreen />} />
           <Route path="/register" element={<Register />} />
           <Route path="/aforo" element={
               <ProtectedRoute>
