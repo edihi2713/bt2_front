@@ -17,7 +17,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { genericPostService } from "../../api/externalServices";
 import BackdropLoader from "../common/backdroploader";
 import { useDispatch  } from 'react-redux'
-import { login } from '../../features/user/userSlice'
+import { login, setSelectedChurch } from '../../features/user/userSlice'
 import { useNavigate } from "react-router-dom";
 
 
@@ -43,7 +43,7 @@ const theme = createTheme();
 
 function Login() {
 
-  const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || "http://localhost:4000";
+  const BASE_URL = "http://localhost:4000";
 
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -93,7 +93,13 @@ function Login() {
           token: results[0].access_token
         })
       );
-
+      
+      dispatch(
+        setSelectedChurch({
+          selectedChurchId:  results[0].churchId,
+        })
+      );
+      
       setErrorMessage("");
       return navigate("/dashboard");
 

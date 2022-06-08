@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "../Card";
 import dataCards from "../dataCards";
 import styles from "./home.module.css";
 import { useSelector } from 'react-redux'
+import { useNavigate } from "react-router-dom";
 
 function MainOptionsScreen() {
-    const user = useSelector(state => state.user)
+    const user = useSelector(state => state.user);
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if(user.selectedChurchId === ""){
+            return navigate("/");
+          }
+    },[])
     const cards = dataCards.map((card) => {
       return (
         <> 

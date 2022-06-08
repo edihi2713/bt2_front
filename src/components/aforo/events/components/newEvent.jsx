@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
+import { genericPostService, getAuthHeaders } from '../../../../api/externalServices';
 
 
 const style = {
@@ -32,12 +33,15 @@ const validationSchema = yup.object({
     .required('la fecha y hora es obligatoria'),
   capacity: yup
     .number()
-    .positive()
+    .positive("El campo debe sere mayor a 0")
     .required('La capacidad es obligatorio')
 });
 
-export default function NewEventModal({open, setOpen}) {
+export default function NewEventModal({open, setOpen, setIsUpdateRequired}) {
+  const BASE_URL = "http://localhost:4000";
+
   const user = useSelector(state => state.user);
+
 
   const formik = useFormik({
     initialValues: {
@@ -48,12 +52,23 @@ export default function NewEventModal({open, setOpen}) {
     validationSchema: validationSchema,
     onSubmit: async (values) => {
 
-      var payload = {...values, time: values.date.split("T")[1], user: user.selectedChurchId };
+      var payload = {...values, time: values.date.split("T")[1], churchId: user.selectedChurchId };
 
-      console.log(JSON.stringify(payload, null, 2));
-      alert(JSON.stringify(payload, null, 2));
+      const results = await genericPostService(`${BASE_URL}/event`, payload, getAuthHeaders(user.token));
+
+      if(results[1]){
+        alert("Se ha presentado un error")
+      }else{
+        setIsUpdateRequired(true)
+        closeModal();
+      }   
     },
   });
+
+  const closeModal = () => {
+    formik.resetForm()
+    setOpen(false);
+  } 
 
   return (
     <div>
@@ -123,7 +138,7 @@ export default function NewEventModal({open, setOpen}) {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
-                    onClick={() => setOpen(false)}
+                    onClick={() => closeModal()}
                 >
                     Cerrar
                 </Button>

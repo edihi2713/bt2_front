@@ -38,7 +38,12 @@ const RoutesCollection = (
           <Route path="/new-people" element={<FormAforo />}/>
           <Route path="/events-option" element={<EventsOptions />}/>
           <Route path="/verify-asistents" element={<VerifyAsistents />}/>
-          <Route path="/create-events" element={<EventListView />}/>
+          <Route path="/create-events" 
+          element={
+            <ProtectedRoute>
+                <EventListView />
+            </ProtectedRoute>
+          }/>
       </Routes>
 );
 

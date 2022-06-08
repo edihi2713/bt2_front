@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -25,13 +25,17 @@ const rows = [
     createData("19/05/2022", "Culto 7", "18:00", 50, "35", "100%", "50", "Pendiente")
 ];
 
-export default function BasicTable() {
+export default function BasicTable({events}) {
 
-    const [rowData, setRowData] = useState(rows);
+    const [rowData, setRowData] = useState(events);
     const [orderDirection, setOrderDirection] = useState("asc");
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(0);
 
+    useEffect(()=>{
+        setRowData(events);
+    }, [events]);
+    
     const sortArray = (arr, orderBy, columnName) => {
         switch (orderBy) {
             case "asc":
@@ -47,7 +51,7 @@ export default function BasicTable() {
     };
 
     const handleSortRequest = (columnName) => {
-        setRowData(sortArray(rows, orderDirection, columnName));
+        setRowData(sortArray(rowData, orderDirection, columnName));
         setOrderDirection(orderDirection === "asc" ? "desc" : "asc");
     };
 
@@ -57,45 +61,45 @@ export default function BasicTable() {
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell align="center" onClick={() => handleSortRequest('fecha')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('date')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Fecha
                                 </TableSortLabel>
                             </TableCell>
 
-                            <TableCell align="center" onClick={() => handleSortRequest('nombre')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('name')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Nombre
                                 </TableSortLabel>
                             </TableCell>
 
-                            <TableCell align="center" onClick={() => handleSortRequest('hora')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('time')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Hora
                                 </TableSortLabel>
                             </TableCell>
 
-                            <TableCell align="center" onClick={() => handleSortRequest('capacidad')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('capacity')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Capacidad
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell align="center" onClick={() => handleSortRequest('reservas')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('capacity')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Resevas
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell align="center" onClick={() => handleSortRequest('porcReservas')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('capacity')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     % Resevas
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell align="center" onClick={() => handleSortRequest('asistencia')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('capacity')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Asistencia
                                 </TableSortLabel>
                             </TableCell>
-                            <TableCell align="center" onClick={() => handleSortRequest('estado')}>
+                            <TableCell align="center" onClick={() => handleSortRequest('status')}>
                                 <TableSortLabel active={true} direction={orderDirection}>
                                     Estado
                                 </TableSortLabel>
@@ -105,17 +109,17 @@ export default function BasicTable() {
                     </TableHead>
                     <TableBody>
                         {rowData.map((row) => (
-                            <TableRow key={row.fecha}>
+                            <TableRow key={row._id}>
                                 <TableCell component="th" scope="row" align="center">
-                                    {row.fecha}
+                                    {row.date}
                                 </TableCell>
-                                <TableCell align="center">{row.nombre}</TableCell>
-                                <TableCell align="center">{row.hora}</TableCell>
-                                <TableCell align="center">{row.capacidad}</TableCell>
-                                <TableCell align="center">{row.reservas}</TableCell>
-                                <TableCell align="center">{row.porcReservas}</TableCell>
-                                <TableCell align="center">{row.asistencia}</TableCell>
-                                <TableCell align="center">{row.estado}</TableCell>
+                                <TableCell align="center">{row.name}</TableCell>
+                                <TableCell align="center">{row.time}</TableCell>
+                                <TableCell align="center">{row.capacity}</TableCell>
+                                <TableCell align="center">{row.capacity}</TableCell>
+                                <TableCell align="center">{row.capacity}</TableCell>
+                                <TableCell align="center">{row.capacity}</TableCell>
+                                <TableCell align="center">{row.status}</TableCell>
                                 <TableCell align="center">
                                     <Stack spacing={1} direction="row">
                                         <InfoIcon></InfoIcon>

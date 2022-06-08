@@ -1,13 +1,60 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import './capacity.css'
 import BasicTable from './eventListView'
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import NewEventModal from '../components/newEvent';
+import { useSelector } from 'react-redux';
+import { genericGetService, getAuthHeaders } from '../../../../api/externalServices';
+import BackdropLoader from '../../../common/backdroploader';
 
 export default function Aforo() {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const [loading, setLoading] = useState(false);
+  const [isUpdateRequired, setIsUpdateRequired] = useState(false);
+  const [events, setEvents] = useState([]);
+
+  const user = useSelector(state => state.user);
+
+  const handleOpen = () => {
+    setIsUpdateRequired(false);
+    setOpen(true);
+  } 
+
+  const BASE_URL = "http://localhost:4000";
+
+  const getEvents = async () => {
+    setLoading(true);
+    return await genericGetService(`${BASE_URL}/event/eventsByChurch/${user.selectedChurchId}`,getAuthHeaders(user.token) );
+  }
+
+  useEffect(()=> {
+    if(isUpdateRequired){
+      setLoading(true);
+      getEvents().then(data => {
+        setLoading(false);
+        if(data[0]){
+          setEvents(data[0]);
+          return;
+        }
+
+        alert("Error");
+        
+      });
+    }
+  },[isUpdateRequired]);
+
+  useEffect(()=> {
+    getEvents().then(data => {
+      setLoading(false);
+      if(data[0]){
+        setEvents(data[0]);
+        return;
+      }
+
+      alert("Error");
+    });
+  },[]);
 
   return (
     <div className='aforoMainContainer'>
@@ -21,9 +68,14 @@ export default function Aforo() {
 
       </div>
 
-      <NewEventModal open = {open} setOpen = {setOpen} />
-      <BasicTable style={{ marginTop: "35px !important" }} />
-
+      <NewEventModal open = {open} setOpen = {setOpen}  setIsUpdateRequired = {setIsUpdateRequired} />
+      
+      {
+        loading ? <BackdropLoader show={loading} message="Consultando los eventos" /> :  
+        events.length > 0 ?   <BasicTable style={{ marginTop: "35px !important" }} events={events} /> :
+          <div>No se encontraron resultados</div>
+      }
+    
     </div>
   )
 }

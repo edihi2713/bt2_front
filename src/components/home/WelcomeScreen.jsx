@@ -11,6 +11,8 @@ import { useDispatch  } from 'react-redux'
 import {setSelectedChurch } from '../../features/user/userSlice';
 import { useNavigate, Navigate  } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import {Link} from "react-router-dom";
+import LinkMu from '@mui/material/Link';
 
 const style = {
   position: 'absolute',
@@ -51,14 +53,15 @@ export default function WelcomeScreen() {
             }
             setChurches(results[0]);
           };
-          loadChurches()
-    }, []);
 
-    useEffect(() => {
-        return () => { 
+          if(user.selectedChurchId === ""){
+            loadChurches()
+          }
+         
+          return () => { 
             setChurches(null)
         }
-      }, [])
+    }, []);
 
     useEffect(() =>{
         if(selectedChurchId){
@@ -99,8 +102,11 @@ export default function WelcomeScreen() {
                             error={error}
                             helperText={errorMessage}
                             items={churches}/>
+
                     </Grid>
-  
+                    <Grid item>
+                        <Link to="/login" className='text-link'><LinkMu component={"span"}  variant="body2">Ingresar al sistema</LinkMu> </Link> 
+                    </Grid>
                     <Grid item xs={12}>
                         <Button
                         type="button"
