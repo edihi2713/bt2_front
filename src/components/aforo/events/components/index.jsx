@@ -15,6 +15,7 @@ export default function Aforo() {
   const [events, setEvents] = useState([]);
 
   const user = useSelector(state => state.user);
+  const selectedEventId = useSelector(state => state.events.selectedEventId);
 
   const handleOpen = () => {
     setIsUpdateRequired(false);
@@ -27,6 +28,12 @@ export default function Aforo() {
     setLoading(true);
     return await genericGetService(`${BASE_URL}/event/eventsByChurch/${user.selectedChurchId}`,getAuthHeaders(user.token) );
   }
+
+  useEffect(() => {
+    if(selectedEventId){
+      setOpen(true);
+    }
+  }, [selectedEventId]);
 
   useEffect(()=> {
     if(isUpdateRequired){
@@ -68,7 +75,7 @@ export default function Aforo() {
 
       </div>
 
-      <NewEventModal open = {open} setOpen = {setOpen}  setIsUpdateRequired = {setIsUpdateRequired} />
+      <NewEventModal open = {open} setOpen = {setOpen}  setIsUpdateRequired = {setIsUpdateRequired}/>
       
       {
         loading ? <BackdropLoader show={loading} message="Consultando los eventos" /> :  

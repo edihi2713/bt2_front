@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -10,7 +10,8 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
 import { genericPostService, getAuthHeaders } from '../../../../api/externalServices';
-
+import { useDispatch  } from 'react-redux'
+import {setSelectedEvent} from '../../../../features/events/eventsSlice';
 
 const style = {
   position: 'absolute',
@@ -38,10 +39,22 @@ const validationSchema = yup.object({
 });
 
 export default function NewEventModal({open, setOpen, setIsUpdateRequired}) {
+
+  const dispatch = useDispatch();
+
   const BASE_URL = "http://localhost:4000";
-
   const user = useSelector(state => state.user);
+  const selectedEventId = useSelector(state => state.events.selectedEventId);
 
+  const isEditting = selectedEventId !== null;
+
+  useEffect(() => {
+    if(isEditting){
+      formik.values.name = selectedEventId.name
+      formik.values.date = selectedEventId.date
+      formik.values.capacity = selectedEventId.capacity
+    }
+  }, [isEditting])
 
   const formik = useFormik({
     initialValues: {
@@ -67,6 +80,11 @@ export default function NewEventModal({open, setOpen, setIsUpdateRequired}) {
 
   const closeModal = () => {
     formik.resetForm()
+    dispatch(
+      setSelectedEvent({
+          selectedEventId: null
+      }))
+
     setOpen(false);
   } 
 
@@ -79,7 +97,7 @@ export default function NewEventModal({open, setOpen, setIsUpdateRequired}) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Crear Evento
+            {isEditting ? "Editar Evento" : "Crear Evento"} 
           </Typography>
           <Box component="form" onSubmit={formik.handleSubmit} noValidate sx={{ mt: 3 }}>
               <Grid container spacing={1}>

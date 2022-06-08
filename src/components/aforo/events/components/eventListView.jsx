@@ -10,6 +10,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
+import { useDispatch  } from 'react-redux'
+import {setSelectedEvent} from '../../../../features/events/eventsSlice';
 
 function createData(fecha, nombre, hora, capacidad, reservas, porcReservas, asistencia, estado) {
     return { fecha, nombre, hora, capacidad, reservas, porcReservas, asistencia, estado };
@@ -27,6 +29,7 @@ const rows = [
 
 export default function BasicTable({events}) {
 
+    const dispatch = useDispatch();
     const [rowData, setRowData] = useState(events);
     const [orderDirection, setOrderDirection] = useState("asc");
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -48,6 +51,14 @@ export default function BasicTable({events}) {
                     a[columnName] < b[columnName] ? 1 : b[columnName] < a[columnName] ? -1 : 0
                 );
         }
+    };
+
+    const selectEvent = (event) => {
+        dispatch(
+            setSelectedEvent({
+                selectedEventId: event
+            })
+        )
     };
 
     const handleSortRequest = (columnName) => {
@@ -123,7 +134,7 @@ export default function BasicTable({events}) {
                                 <TableCell align="center">
                                     <Stack spacing={1} direction="row">
                                         <InfoIcon></InfoIcon>
-                                        <ModeEditIcon></ModeEditIcon>
+                                        <ModeEditIcon onClick = {() => {selectEvent(row)}}></ModeEditIcon>
                                     </Stack>
                                 </TableCell>
                             </TableRow>
