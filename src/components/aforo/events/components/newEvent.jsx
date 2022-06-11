@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { genericPostService, getAuthHeaders } from '../../../../api/externalServices';
 import { useDispatch  } from 'react-redux'
 import {setSelectedEvent} from '../../../../features/events/eventsSlice';
+import { B2C_BASE_URL } from '../../../../constants';
 
 const style = {
   position: 'absolute',
@@ -42,7 +43,7 @@ export default function NewEventModal({open, setOpen, setIsUpdateRequired}) {
 
   const dispatch = useDispatch();
 
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = B2C_BASE_URL;
   const user = useSelector(state => state.user);
   const selectedEventId = useSelector(state => state.events.selectedEventId);
 

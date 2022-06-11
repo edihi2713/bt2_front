@@ -19,6 +19,7 @@ import BackdropLoader from "../common/backdroploader";
 import { useDispatch  } from 'react-redux'
 import { login, setSelectedChurch } from '../../features/user/userSlice'
 import { useNavigate } from "react-router-dom";
+import { B2C_BASE_URL } from '../../constants';
 
 
 function Copyright(props) {
@@ -43,7 +44,7 @@ const theme = createTheme();
 
 function Login() {
 
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = B2C_BASE_URL;
 
   let navigate = useNavigate();
   const dispatch = useDispatch();

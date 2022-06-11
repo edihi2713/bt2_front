@@ -17,6 +17,7 @@ import { genericGetService, genericPostService } from "../../api/externalService
 import  AutoCompleteSearch from './autoCompleteSearch';
 import BackdropLoader from "../common/backdroploader";
 import { useFormik } from 'formik';
+import { B2C_BASE_URL } from '../../constants';
 import * as yup from 'yup';
 
 const theme = createTheme();
@@ -50,7 +51,7 @@ const validationSchema = yup.object({
 });
 
 function Register() {
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = B2C_BASE_URL;
   const [loading, setLoading] = useState(true);
   const [errorInfo, setErrorInfo] = useState("");
   const [churches, setChurches] = useState([]);

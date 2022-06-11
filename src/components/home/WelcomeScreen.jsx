@@ -12,6 +12,7 @@ import {setSelectedChurch } from '../../features/user/userSlice';
 import { useNavigate, Navigate  } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import {Link} from "react-router-dom";
+import { B2C_BASE_URL } from '../../constants';
 import LinkMu from '@mui/material/Link';
 
 const style = {
@@ -28,7 +29,7 @@ const style = {
 
 export default function WelcomeScreen() {
     const user = useSelector(state => state.user);
-    const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL || "http://localhost:4000";
+    const BASE_URL = B2C_BASE_URL;
     const dispatch = useDispatch();
     let navigate = useNavigate();
     const [churches, setChurches] = useState([]);

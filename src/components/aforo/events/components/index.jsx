@@ -7,6 +7,7 @@ import NewEventModal from '../components/newEvent';
 import { useSelector } from 'react-redux';
 import { genericGetService, getAuthHeaders } from '../../../../api/externalServices';
 import BackdropLoader from '../../../common/backdroploader';
+import { B2C_BASE_URL } from '../../../../constants';
 
 export default function Aforo() {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,7 @@ export default function Aforo() {
     setOpen(true);
   } 
 
-  const BASE_URL = "http://localhost:4000";
+  const BASE_URL = B2C_BASE_URL;
 
   const getEvents = async () => {
     setLoading(true);
