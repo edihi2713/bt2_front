@@ -122,7 +122,7 @@ export default function BasicTable({events}) {
                         {rowData.map((row) => (
                             <TableRow key={row._id}>
                                 <TableCell component="th" scope="row" align="center">
-                                    {row.date}
+                                    {row.date?.split("T")[0]}
                                 </TableCell>
                                 <TableCell align="center">{row.name}</TableCell>
                                 <TableCell align="center">{row.time}</TableCell>

@@ -51,8 +51,12 @@ export default function NewEventModal({open, setOpen, setIsUpdateRequired}) {
   useEffect(() => {
     if(isEditting){
       formik.values.name = selectedEventId.name
-      formik.values.date = selectedEventId.date
+      formik.values.date = `${selectedEventId.date.split("T")[0]}T${selectedEventId.time}`
       formik.values.capacity = selectedEventId.capacity
+    }else{
+      formik.values.name = ''
+      formik.values.date = ''
+      formik.values.capacity = ''
     }
   }, [isEditting])
 
