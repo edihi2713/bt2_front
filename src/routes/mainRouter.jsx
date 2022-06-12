@@ -14,37 +14,39 @@ import EventsOptions from "../components/aforo/events";
 import VerifyAsistents from "../components/aforo/events/components/VerifyAsistents";
 import EventListView from '../components/aforo/events/components/index'
 import MainOptionsScreen from "../components/home/MainOptionsScreen";
+import ConfirmBooking from "../components/aforo/events/bookings/confirmBooking";
 
 const RoutesCollection = (
-      <Routes>
-          <Route exact path="/"  element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/main" element={<MainOptionsScreen />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/aforo" element={
-              <ProtectedRoute>
-                <Aforo />
-              </ProtectedRoute>
-            } />
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <HomeUser />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/*" element={<Aforo />} />
-          <Route path="/new-people" element={<FormAforo />}/>
-          <Route path="/events-option" element={<EventsOptions />}/>
-          <Route path="/verify-asistents" element={<VerifyAsistents />}/>
-          <Route path="/create-events" 
-          element={
-            <ProtectedRoute>
-                <EventListView />
-            </ProtectedRoute>
-          }/>
-      </Routes>
+  <Routes>
+    <Route exact path="/" element={<Home />} />
+    <Route path="/login" element={<Login />} />
+    <Route path="/main" element={<MainOptionsScreen />} />
+    <Route path="/register" element={<Register />} />
+    <Route path="/aforo" element={
+      <ProtectedRoute>
+        <Aforo />
+      </ProtectedRoute>
+    } />
+    <Route
+      path="/dashboard"
+      element={
+        <ProtectedRoute>
+          <HomeUser />
+        </ProtectedRoute>
+      }
+    />
+    <Route path="/*" element={<Aforo />} />
+    <Route path="/new-people" element={<FormAforo />} />
+    <Route path="/events-option" element={<EventsOptions />} />
+    <Route path="/verify-asistents" element={<VerifyAsistents />} />
+    <Route path="/create-events"
+      element={
+        <ProtectedRoute>
+          <EventListView />
+        </ProtectedRoute>
+      } />
+    <Route path="/confirmarReserva" element={<ConfirmBooking/>} />
+  </Routes>
 );
 
 export default RoutesCollection;
